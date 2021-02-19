@@ -1,0 +1,9 @@
+short term:
+webinterface (done)
+control on/off (done)
+aquisition (parts ordered)
+on site deployment
+
+long term:
+web cam (done for pi cam)
+speed controll (pwm)
