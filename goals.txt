@@ -7,3 +7,4 @@ on site deployment
 long term:
 web cam (done for pi cam)
 speed controll (pwm)
+other gases
