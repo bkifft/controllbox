@@ -8,6 +8,7 @@ Installation:
 	sudo apt install python3-dev python3-rpi.gpio python3-opencv python3-flask python3-picamera python3-smbus
 - reload, enable and start the service:
 	systemctl daemon-reload; systemctl enable controllbox; systemctl start controllbox
+- enable i2c in raspi-config 
 - write protect the filesystem by enabling the Overlay-FS:
 	raspi-config -> Advanced -> Overlay-FS
 
