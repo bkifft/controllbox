@@ -6,14 +6,14 @@
     <link rel="icon" href="data:,">
     <title>Controllbox {{ HOSTNAME }}</title>
     <style>
-html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center; background-color: #ccffb3;}
+html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;}
 .button {background-color: #006699; border: none; color: white; padding: 15px 40px;text-decoration: none; font-size: 35px; margin: 2px; cursor: pointer;}
 .OFF {background-color: #555555;}
 #content::after {display:block; content:""; clear:both;}
 </style> </head>
-  <body>
+  <body style="background-color: #ed008c;">
     <h1>Help Alexa soar</h1>
-    <p>Hostname: {{ HOSTNAME }} </p>
+    <p>Hostname: {{ HOSTNAME }}&nbsp;</p>
     <p>IP: {{ IP }}</p>
     <p>Relay State: {{ RELAY }}</p>
     <div>
@@ -23,7 +23,9 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
           OFF</a></p>
       <p><a href="/SW3/ON" class="button ON">3 ON</a> <a href="/SW3/OFF" class="button OFF">3
           OFF</a></p>
-      <p><a href="/SW4/ON" class="button ON">4 ON</a> <a href="/SW4/OFF" class="button OFF">4 OFF</a></p>
+      <p><a href="/SW4/ON" class="button ON">4 ON</a> <a href="/SW4/OFF" class="button OFF">4
+          OFF</a></p>
+      <p><img src="Alexa%20Logo.png" alt=""></p>
     </div>
   </body>
 </html>
