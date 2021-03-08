@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, Response
 import smbus
-from camera_pi import Camera
+#from camera_pi import Camera
 import re
 import socket
 import os
@@ -48,6 +48,7 @@ def get_IP(interface="eth0"): #returns the ip adress
   return IP
 
 def clack_octet(octet): #signal an octet by allowing user to count the clacking the relay
+  return
   global relay_state
   padded_octet = octet.rjust(3, '0') #padding with zeroes from left to 3 characters
   pause_time = 60 / bpm
@@ -72,11 +73,11 @@ def get_MAC(interface='eth0'): #returns the MAC adress
     str = "00:00:00:00:00:00"
   return str[0:17]
 
-def gen(camera): #constantly pushes the current camera frame to the browser
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+#def gen(camera): #constantly pushes the current camera frame to the browser
+#    while True:
+#        frame = camera.get_frame()
+#        yield (b'--frame\r\n'
+#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/') #landing page
@@ -85,13 +86,20 @@ def index():
 		'RELAY' : get_relay_state_string(),
 		'IP' : get_IP(),
 		'MAC' : get_MAC(),
+		'HOSTNAME' : 'fixme',
 	}
 	return render_template('index.html', **templateData)
 
-@app.route('/video_feed') #endpoint for the current frame
-def video_feed():
-    return #comment out to enable the camera
-    return Response(gen(Camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+#@app.route('/video_feed') #endpoint for the current frame
+#def video_feed():
+#    return Response(gen(Camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route("/secret/update/") # endpoint for updates
+def update():
+	os.chdir('/home/pi/controllbox')
+	str = os.popen('sudo su - pi -c git pull')
+	str2 = os.popen('bash install.sh') 
+	return str + ' <br> '+ str2
 
 @app.route("/<devicename>/<action>") # endpoint for controll actions
 def action(devicename, action):
@@ -109,9 +117,12 @@ def action(devicename, action):
 	  	'RELAY' : get_relay_state_string(),
 		'IP' : get_IP(),
 		'MAC' : get_MAC(),
+		'HOSTNAME' : 'fixme',
 	}
 
 	return render_template('index.html', **templateData)
+
+
 
 if __name__ == '__main__':
   IP = get_IP()
