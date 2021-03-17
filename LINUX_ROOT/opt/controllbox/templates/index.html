@@ -12,10 +12,11 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
 #content::after {display:block; content:""; clear:both;}
 </style> </head>
   <body style="background-color: #ed008c;">
+    <h1><img src="AlexaLogo.png" alt=""></h1>
     <h1>Help Alexa soar</h1>
-    <p>Hostname: {{ HOSTNAME }}&nbsp;</p>
-    <p>IP: {{ IP }}</p>
     <p>Relay State: {{ RELAY }}</p>
+    <p><br>
+    </p>
     <div>
       <p><a href="/SW1/ON" class="button ON">1 ON</a> <a href="/SW1/OFF" class="button OFF">1
           OFF</a></p>
@@ -25,7 +26,7 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
           OFF</a></p>
       <p><a href="/SW4/ON" class="button ON">4 ON</a> <a href="/SW4/OFF" class="button OFF">4
           OFF</a></p>
-      <p><img src="Alexa%20Logo.png" alt=""></p>
+      <p></p>
     </div>
   </body>
 </html>
