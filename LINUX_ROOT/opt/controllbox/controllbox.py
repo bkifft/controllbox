@@ -8,6 +8,8 @@ import os
 import time
 import random
 import sys
+import schedule
+from threading import Thread
 
 bpm = 75 #used for clack_octet()
 
@@ -27,6 +29,21 @@ def relay_send(payload):
     bus.write_byte_data(0x20, 0x6, payload) #0x20 adress (canbe set via A0-A3 DIP on the relay board), 0x6 type (required value)
   except:
     print ("failed to i2c_send")
+
+def activity_loop():
+	global relay_state
+	global relay_time
+	for i in range(len(relay_time)):
+		if relay_time[i] > 0:
+			relay_time[i] -= 1
+			if relay_time[i] == 0:
+				relay_state |= (0x1 << i) # this sets the respective bit to 1, turning the relay off
+				relay_send(relay_state)
+
+def run_schedule():
+	while 1:
+		schedule.run_pending()
+		time.sleep(0.01)
 
 def get_relay_state_string(): # returns relay state in form of "Relay 1: OFF Relay 2: ON Relay 3: OFF Relay 4: ON"
   global relay_state
@@ -136,6 +153,9 @@ def action(devicename, action):
 
 
 if __name__ == '__main__':
+  schedule.every(1).seconds.do(activity_loop)
+  t = Thread(target=run_schedule)
+  t.start()
   IP = get_IP()
   last_octet = IP.split('.')[3]
 #  clack_octet(last_octet)
