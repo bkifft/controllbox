@@ -19,9 +19,10 @@ except:
   print ("SMBus(1) not found")
 
 relay_state = 0xff #all off
+relay_time = [0] * 4
 
 
-def i2c_send(payload):
+def relay_send(payload):
   try:
     bus.write_byte_data(0x20, 0x6, payload) #0x20 adress (canbe set via A0-A3 DIP on the relay board), 0x6 type (required value)
   except:
@@ -56,13 +57,13 @@ def clack_octet(octet): #signal an octet by allowing user to count the clacking 
     relay_index = random.randint(0, 3) #basic wearleveling
     for x in range(1,position+1): #count for position
       relay_state = relay_state ^ (1 << relay_index) #toggles the relay-index-th bit
-      i2c_send(relay_state)
+      relay_send(relay_state)
       time.sleep(pause_time)
     time.sleep(2*pause_time)
     number_at_current_position = ord(padded_octet[position-1]) - 48 #-48 converts ascii value to int value
     for x in range(1,number_at_current_position+1): #count for value
       relay_state = relay_state ^ (1 << relay_index) #toggles the relay-index-th bit
-      i2c_send(relay_state)
+      relay_send(relay_state)
       time.sleep(pause_time)
     time.sleep(2*pause_time)
 
@@ -94,30 +95,40 @@ def index():
 #def video_feed():
 #    return Response(gen(Camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route("/secret/update/") # endpoint for updates
-def update():
-	os.chdir('/home/pi/controllbox')
-	str = os.popen('sudo su - pi -c git pull')
-	str2 = os.popen('bash install.sh') 
-	return str + ' <br> '+ str2
+#@app.route("/secret/update/") # endpoint for updates
+#def update():
+#	os.chdir('/home/pi/controllbox')
+#	str = os.popen('sudo su - pi -c git pull')
+#	str2 = os.popen('bash install.sh') 
+#	return str + ' <br> '+ str2
 
 @app.route("/<devicename>/<action>") # endpoint for controll actions
 def action(devicename, action):
 	global relay_state
+	global relay_time
 	if re.match("^SW[1-4]$", devicename) is not None:
-		switchid = ord(devicename[2]) - 48 - 1 #[2] is 0-4 (checked by regex), a numbers ASCII -48 is its value in int, -1 as the internal relay count is 0-3
+		relay_id = ord(devicename[2]) - 48 - 1 #[2] is 0-4 (checked by regex), a numbers ASCII -48 is its value in int, -1 as the internal relay count is 0-3
 		if action == "ON":
-			relay_state &= ~(0x1 << switchid) # this sets the respective bit to 0
+			relay_state &= ~(0x1 << relay_id) # this sets the respective bit to 0
+			relay_time[relay_id] = 0
 		if action == "OFF":
-			relay_state |= (0x1 << switchid) # this sets the respective bit to 1
+			relay_state |= (0x1 << relay_id) # this sets the respective bit to 1
+			relay_time[relay_id] = 0
+		if action == "TOGGLE":
+			relay_state ^= (0x1 << relay_id) # this toggles the respective bit
+			relay_time[relay_id] = 0
+		if re.match("^\d*$", action) is not None:
+			relay_state &= ~(0x1 << relay_id) # this sets the respective bit to 0
+			relay_time[relay_id] += int(action)
 
-	i2c_send(relay_state)
+	relay_send(relay_state)
 
 	templateData = {
 	  	'RELAY' : get_relay_state_string(),
 		'IP' : get_IP(),
 		'MAC' : get_MAC(),
 		'HOSTNAME' : 'fixme',
+		'TIME1' : relay_time[0],
 	}
 
 	return render_template('index.html', **templateData)
@@ -127,9 +138,9 @@ def action(devicename, action):
 if __name__ == '__main__':
   IP = get_IP()
   last_octet = IP.split('.')[3]
-  clack_octet(last_octet)
+#  clack_octet(last_octet)
   time.sleep(2)
-  i2c_send(0xff) # initial reset, all off
+  relay_send(0xff) # initial reset, all off
   relay_state = 0xff
   app.run(host='0.0.0.0', port=80, debug=False, threaded=True) #start the webserver
 
