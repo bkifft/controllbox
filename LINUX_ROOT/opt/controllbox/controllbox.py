@@ -56,6 +56,14 @@ def get_relay_state_string(): # returns relay state in form of "Relay 1: OFF Rel
       retval += "ON "
   return retval
 
+def get_relay_time_string(): # returns relay times in form of "Relay 1: 1s Relay 2: 2s Relay 3: 3s Relay 4: 0s"
+  global relay_state
+  global relay_time
+  retval = ""
+  for x in range(0, 4):
+    retval += "Relay " + str(x+1) + ": " + str(relay_time[x]) +"s "
+  return retval
+
 def get_IP(interface="eth0"): #returns the ip adress
   stream = os.popen('ip address show dev %s' %interface)
   output = stream.read()
@@ -97,16 +105,20 @@ def get_MAC(interface='eth0'): #returns the MAC adress
 #        yield (b'--frame\r\n'
 #               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-
-@app.route('/') #landing page
-def index():
-	templateData = {
-		'RELAY' : get_relay_state_string(),
+def get_template_data():
+	template_data = {
+	  	'RELAY' : get_relay_state_string(),
 		'IP' : get_IP(),
 		'MAC' : get_MAC(),
 		'HOSTNAME' : 'fixme',
+		'TIME' : get_relay_time_string(),
 	}
-	return render_template('index.html', **templateData)
+	return template_data
+
+@app.route('/') #landing page
+def index():
+	template_data = get_template_data()
+	return render_template('index.html', **template_data)
 
 #@app.route('/video_feed') #endpoint for the current frame
 #def video_feed():
@@ -140,15 +152,8 @@ def action(devicename, action):
 
 	relay_send(relay_state)
 
-	templateData = {
-	  	'RELAY' : get_relay_state_string(),
-		'IP' : get_IP(),
-		'MAC' : get_MAC(),
-		'HOSTNAME' : 'fixme',
-		'TIME1' : relay_time[0],
-	}
-
-	return render_template('index.html', **templateData)
+	template_data = get_template_data()
+	return render_template('index.html', **template_data)
 
 
 

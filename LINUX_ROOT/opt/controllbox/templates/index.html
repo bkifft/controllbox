@@ -5,28 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/static/AlexaLogo.png">
     <title>Controllbox {{ HOSTNAME }}</title>
-    <style>
+<style>
+html{
+  background-color: #ed008c;
+  text-align: center;
+  display: inline;
+} 
+.body{
+  max-width: 70%;
+  margin: auto;
+}
+</style>
+
+
+
+<!---    <style>
 html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;}
 .button {background-color: #006699; border: none; color: white; padding: 15px 40px;text-decoration: none; font-size: 35px; margin: 2px; cursor: pointer;}
 .OFF {background-color: #555555;}
 #content::after {display:block; content:""; clear:both;}
-</style> </head>
-  <body style="background-color: #ed008c;">
-    <h1><img src="/static/AlexaLogo.png" alt=""></h1>
+</style> 
+-->
+  </head>
+  <body>
+  <div class="body">
+    <h1><a href="/"><img src="/static/AlexaLogo.png" alt=""></a></h1>
     <h1>Help Alexa soar</h1>
-    <p>Relay State: {{ RELAY }}</p>
-    <p>Relay 1 time: {{ TIME1 }}</p>
-    <p><br>
-    </p>
+    <p>Relay state: {{ RELAY }}</p>
+    <p>Relay time: {{ TIME }}</p>
+    <br>
     <div>
-      <p><a href="/SW1/TOGGLE" class="button TOGGLE">Toggle 1</a> <a href="/SW1/5" class="button time">1 +5s</a></p>
-      <p><a href="/SW2/ON" class="button ON">2 ON</a> <a href="/SW2/OFF" class="button OFF">2
-          OFF</a></p>
-      <p><a href="/SW3/ON" class="button ON">3 ON</a> <a href="/SW3/OFF" class="button OFF">3
-          OFF</a></p>
-      <p><a href="/SW4/ON" class="button ON">4 ON</a> <a href="/SW4/OFF" class="button OFF">4
-          OFF</a></p>
-      <p></p>
+      <div>
+	<a href="/SW1/ON" class="button ON"><button>1 ON</button></a> 
+        <a href="/SW1/OFF" class="button OFF"><button>1 OFF</button></a>
+	<a href="/SW1/TOGGLE" class="button TOGGLE"><button>Toggle 1</button></a> 
+	<a href="/SW1/5" class="button time"><button>1 +5s</button></a>
+      </div>
+      <div>
+	<a href="/SW2/ON" class="button ON"><button>2 ON</button></a> 
+        <a href="/SW2/OFF" class="button OFF"><button>2 OFF</button></a>
+	<a href="/SW2/TOGGLE" class="button TOGGLE"><button>Toggle 2</button></a> 
+	<a href="/SW2/5" class="button time"><button>2 +5s</button></a>
+      </div>
+      <div>
+	<a href="/SW3/ON" class="button ON"><button>3 ON</button></a> 
+	<a href="/SW3/OFF" class="button OFF"><button>3 OFF</button></a>
+	<a href="/SW3/TOGGLE" class="button TOGGLE"><button>Toggle 3</button></a> 
+	<a href="/SW3/5" class="button time"><button>3 +5s</button></a>
+      </div>
+      <div>
+	<a href="/SW4/ON" class="button ON"><button>4 ON</button></a> 
+	<a href="/SW4/OFF" class="button OFF"><button>4 OFF</button></a>
+	<a href="/SW4/TOGGLE" class="button TOGGLE"><button>Toggle 4</button></a> 
+	<a href="/SW4/5" class="button time"><button>4 +5s</button></a>
+      </div>
     </div>
+  </div>
   </body>
 </html>
