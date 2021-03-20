@@ -148,8 +148,6 @@ def action(devicename, action):
 
     relay_send(relay_state)
 
-    template_data = get_template_data()
-   # return render_template('index.html', **template_data)
     return "<script>window.location.href = \"/\";</script>"
     
 
