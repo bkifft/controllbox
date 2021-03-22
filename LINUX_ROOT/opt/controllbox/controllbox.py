@@ -32,7 +32,7 @@ def relay_send(payload):
         print("failed to i2c_send")
 
 
-def activity_loop():
+def relay_loop():
     global relay_state
     global relay_time
     for i in range(len(relay_time)):
@@ -153,7 +153,7 @@ def action(devicename, action):
 
 
 if __name__ == '__main__':
-    schedule.every(1).seconds.do(activity_loop)
+    schedule.every(1).seconds.do(relay_loop)
     t = Thread(target=run_schedule)
     t.start()
     IP = get_IP()

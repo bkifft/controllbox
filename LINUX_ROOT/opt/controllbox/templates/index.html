@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/static/AlexaLogo.png">
+	<script src="/static/scripts.js"></script>
     <title>Controllbox {{ HOSTNAME }}</title>
 <style>
 html{
@@ -15,7 +16,7 @@ html{
   max-width: 70%;
   margin: auto;
 }
-button{
+button, input{
   font-size: 30px;
   background-color: #000080;
   border: none;
@@ -43,15 +44,22 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
     <p>Relay time: {{ TIME }}</p>
     <br>
     <div>
-      <div>
+		<div>
+			<button id = "on_1" onclick="fetch('/SW1/ON');">1 ON</button> 
+			<button id = "off_1" onclick="fetch('/SW1/OFF');">1 OFF</button>
+			<button id = "toggle_1" onclick="fetch('/SW1/TOGGLE');">Toggle 1</button> 
+			<button id = "timed_1" onclick="fetch('/SW1/5');">1 +5s</button>
+			<input type="number" id="on_time_1" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='+'+ document.getElementById('on_time_1').value+'s'">
+		</div>
+<!--       <div>
 	<a href="/SW1/ON" class="button ON"><button>1 ON</button></a> 
-        <a href="/SW1/OFF" class="button OFF"><button>1 OFF</button></a>
+    <a href="/SW1/OFF" class="button OFF"><button>1 OFF</button></a>
 	<a href="/SW1/TOGGLE" class="button TOGGLE"><button>Toggle 1</button></a> 
 	<a href="/SW1/5" class="button time"><button>1 +5s</button></a>
       </div>
       <div>
 	<a href="/SW2/ON" class="button ON"><button>2 ON</button></a> 
-        <a href="/SW2/OFF" class="button OFF"><button>2 OFF</button></a>
+    <a href="/SW2/OFF" class="button OFF"><button>2 OFF</button></a>
 	<a href="/SW2/TOGGLE" class="button TOGGLE"><button>Toggle 2</button></a> 
 	<a href="/SW2/5" class="button time"><button>2 +5s</button></a>
       </div>
@@ -66,7 +74,7 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
 	<a href="/SW4/OFF" class="button OFF"><button>4 OFF</button></a>
 	<a href="/SW4/TOGGLE" class="button TOGGLE"><button>Toggle 4</button></a> 
 	<a href="/SW4/5" class="button time"><button>4 +5s</button></a>
-      </div>
+      </div> -->
     </div>
   </div>
   </body>
