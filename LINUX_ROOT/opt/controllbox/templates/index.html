@@ -4,7 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/static/AlexaLogo.png">
-	<script src="/static/scripts.js"></script>
+	<script>
+		setInterval("document.getElementById('relay_time').innerHTML = fetch('/SW1/STATE')",1000);
+	</script>
     <title>Controlbox {{ HOSTNAME }}</title>
 
 <style>
@@ -26,9 +28,6 @@ button, input{
   padding: 10px;
 }
 </style>
-
-
-
 <!---    <style>
 html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;}
 .button {background-color: #006699; border: none; color: white; padding: 15px 40px;text-decoration: none; font-size: 35px; margin: 2px; cursor: pointer;}
@@ -41,16 +40,16 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
   <div class="body">
     <h1><a href="/"><img src="/static/AlexaLogo.png" alt=""></a></h1>
     <h1>Controlbox</h1>
-    <p>Relay state: {{ RELAY }}</p>
-    <p>Relay time: {{ TIME }}</p>
+    <p id="relay_state">Relay state: {{ RELAY }}</p>
+    <p id="relay_time">Relay time: {{ TIME }}</p>
     <br>
     <div>
 		<div>
 			<button id = "on_1" onclick="fetch('/SW1/ON');">1 ON</button> 
 			<button id = "off_1" onclick="fetch('/SW1/OFF');">1 OFF</button>
 			<button id = "toggle_1" onclick="fetch('/SW1/TOGGLE');">Toggle 1</button> 
-			<button id = "timed_1" onclick="fetch('/SW1/5');">1 +5s</button>
-			<input type="number" id="on_time_1" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='+'+ document.getElementById('on_time_1').value+'s'">
+			<button id = "timed_1" onclick="fetch('/SW1/'+document.getElementById('on_time_1').value);">1 +5s</button>
+			<input type="number" id="on_time_1" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='1 +'+ document.getElementById('on_time_1').value+' s'">
 		</div>
 <!--       <div>
 	<a href="/SW1/ON" class="button ON"><button>1 ON</button></a> 
