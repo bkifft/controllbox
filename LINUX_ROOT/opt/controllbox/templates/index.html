@@ -45,36 +45,18 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
     <br>
     <div>
 		<div>
+			<button id = "off_1" onclick="fetch('/SW1/OFF');">1 OFF</button>
+			<button id = "timed_1" onclick="fetch('/SW1/'+document.getElementById('on_time_1').value);">1 +5s</button>
+			<input type="number" id="on_time_1" value="5" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='1 +'+ document.getElementById('on_time_1').value+' s'">
+		</div>
+<!-- 		<div>
 			<button id = "on_1" onclick="fetch('/SW1/ON');">1 ON</button> 
 			<button id = "off_1" onclick="fetch('/SW1/OFF');">1 OFF</button>
 			<button id = "toggle_1" onclick="fetch('/SW1/TOGGLE');">Toggle 1</button> 
 			<button id = "timed_1" onclick="fetch('/SW1/'+document.getElementById('on_time_1').value);">1 +5s</button>
 			<input type="number" id="on_time_1" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='1 +'+ document.getElementById('on_time_1').value+' s'">
-		</div>
-<!--       <div>
-	<a href="/SW1/ON" class="button ON"><button>1 ON</button></a> 
-    <a href="/SW1/OFF" class="button OFF"><button>1 OFF</button></a>
-	<a href="/SW1/TOGGLE" class="button TOGGLE"><button>Toggle 1</button></a> 
-	<a href="/SW1/5" class="button time"><button>1 +5s</button></a>
-      </div>
-      <div>
-	<a href="/SW2/ON" class="button ON"><button>2 ON</button></a> 
-    <a href="/SW2/OFF" class="button OFF"><button>2 OFF</button></a>
-	<a href="/SW2/TOGGLE" class="button TOGGLE"><button>Toggle 2</button></a> 
-	<a href="/SW2/5" class="button time"><button>2 +5s</button></a>
-      </div>
-      <div>
-	<a href="/SW3/ON" class="button ON"><button>3 ON</button></a> 
-	<a href="/SW3/OFF" class="button OFF"><button>3 OFF</button></a>
-	<a href="/SW3/TOGGLE" class="button TOGGLE"><button>Toggle 3</button></a> 
-	<a href="/SW3/5" class="button time"><button>3 +5s</button></a>
-      </div>
-      <div>
-	<a href="/SW4/ON" class="button ON"><button>4 ON</button></a> 
-	<a href="/SW4/OFF" class="button OFF"><button>4 OFF</button></a>
-	<a href="/SW4/TOGGLE" class="button TOGGLE"><button>Toggle 4</button></a> 
-	<a href="/SW4/5" class="button time"><button>4 +5s</button></a>
-      </div> -->
+		</div> -->
+
     </div>
   </div>
   </body>
