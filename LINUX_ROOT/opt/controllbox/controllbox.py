@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, make_response
 import smbus
 # from camera_pi import Camera
 import re
@@ -70,6 +70,7 @@ def get_relay_time_string():  # returns relay times in form of "Relay 1: 1s Rela
     return retval
 
 
+
 def get_IP(interface="eth0"):  # returns the ip adress
     stream = os.popen('ip address show dev %s' % interface)
     output = stream.read()
@@ -133,7 +134,7 @@ def action(devicename, action):
     if re.match("^SW[1-4]$", devicename) is not None:
         if action == "STATE":
             response = app.response_class(
-                response="<p>" + get_relay_state_string() + "</p><p>" + get_relay_state_string() + "</p>" ,
+                response= "<p>"+get_relay_state_string() + "</p><p>" + get_relay_time_string() + "</p>" ,
                 mimetype='text/plain'
             )
             return response
