@@ -127,7 +127,7 @@ def index():
     return render_template('index.html', **template_data)
 
 
-@app.route("/<devicename>/<action>")  # endpoint for controll actions
+@app.route("/<devicename>/<action>",methods = ['POST', 'GET'])  # endpoint for controll actions
 def action(devicename, action):
     global relay_state
     global relay_time
@@ -138,8 +138,6 @@ def action(devicename, action):
                 mimetype='text/plain'
             )
             return response
-
-        
         relay_id = ord(devicename[2]) - 48 - 1  # [2] is 0-4 (checked by regex), a numbers ASCII -48 is its value in int, -1 as the internal relay count is 0-3
         if action == "ON":
             relay_state &= ~(0x1 << relay_id)  # this sets the respective bit to 0

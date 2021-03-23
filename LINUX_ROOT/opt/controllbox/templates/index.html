@@ -4,11 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/static/AlexaLogo.png">
-	<script>
-		setInterval("fetch('/SW1/STATE').then(response => document.getElementById('relay_state').innerHTML = response)",1000)};
-		
-	</script>
-    <title>Controlbox {{ HOSTNAME }}</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="/static/scripts.js"></script>
+	<title>Controlbox {{ HOSTNAME }}</title>
 <style>
 html{
   background-color: #ed008c;
@@ -48,7 +46,22 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
 			<button id = "timed_1" onclick="fetch('/SW1/'+document.getElementById('on_time_1').value);">1 +5s</button>
 			<input type="number" id="on_time_1" value="5" min="1" max="100" oninput="document.getElementById('timed_1').innerHTML ='1 +'+ document.getElementById('on_time_1').value+' s'">
 		</div>
-<!-- 		<div>
+		<div>
+			<button id = "off_2" onclick="fetch('/SW2/OFF');">2 OFF</button>
+			<button id = "timed_2" onclick="fetch('/SW2/'+document.getElementById('on_time_2').value);">2 +5s</button>
+			<input type="number" id="on_time_2" value="5" min="1" max="100" oninput="document.getElementById('timed_2').innerHTML ='2 +'+ document.getElementById('on_time_2').value+' s'">
+		</div>
+		<div>
+			<button id = "off_3" onclick="fetch('/SW3/OFF');">3 OFF</button>
+			<button id = "timed_3" onclick="fetch('/SW3/'+document.getElementById('on_time_3').value);">3 +5s</button>
+			<input type="number" id="on_time_3" value="5" min="1" max="100" oninput="document.getElementById('timed_3').innerHTML ='3 +'+ document.getElementById('on_time_3').value+' s'">
+		</div>
+		<div>
+			<button id = "off_4" onclick="fetch('/SW4/OFF');">4 OFF</button>
+			<button id = "timed_4" onclick="fetch('/SW4/'+document.getElementById('on_time_4').value);">4 +5s</button>
+			<input type="number" id="on_time_4" value="5" min="1" max="100" oninput="document.getElementById('timed_4').innerHTML ='4 +'+ document.getElementById('on_time_4').value+' s'">
+		</div>
+<!-- 	<div>
 			<button id = "on_1" onclick="fetch('/SW1/ON');">1 ON</button> 
 			<button id = "off_1" onclick="fetch('/SW1/OFF');">1 OFF</button>
 			<button id = "toggle_1" onclick="fetch('/SW1/TOGGLE');">Toggle 1</button> 
