@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/static/AlexaLogo.png">
 	<script>
-		setInterval("document.getElementById('relay_time').innerHTML = fetch('/SW1/STATE')",1000);
+		setInterval("fetch('/SW1/STATE').then(response => document.getElementById('relay_state').innerHTML = response)",1000)};
+		
 	</script>
     <title>Controlbox {{ HOSTNAME }}</title>
-
 <style>
 html{
   background-color: #ed008c;
@@ -40,8 +40,7 @@ html {font-family: Cairo; display: inline; margin: 0px auto; text-align: center;
   <div class="body">
     <h1><a href="/"><img src="/static/AlexaLogo.png" alt=""></a></h1>
     <h1>Controlbox</h1>
-    <p id="relay_state">Relay state: {{ RELAY }}</p>
-    <p id="relay_time">Relay time: {{ TIME }}</p>
+    <div id="relay_state">loading...</div>
     <br>
     <div>
 		<div>
