@@ -11,7 +11,6 @@ import sys
 import schedule
 from threading import Thread
 
-bpm = 75  # used for clack_octet()
 
 app = Flask(__name__)
 
@@ -19,6 +18,9 @@ try:
     bus = smbus.SMBus(1)  # i2c via smbus
 except:
     print("SMBus(1) not found")
+    
+
+
 
 relay_state = 0xff  # all off
 relay_time = [0] * 4
