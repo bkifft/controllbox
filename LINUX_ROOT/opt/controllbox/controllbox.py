@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, Response, make_response
-import smbus
-# from camera_pi import Camera
+#import smbus
+
 import re
 import socket
 import os
@@ -10,6 +10,7 @@ import random
 import sys
 import schedule
 from threading import Thread
+import mk312
 
 
 app = Flask(__name__)
@@ -20,12 +21,40 @@ except:
     print("SMBus(1) not found")
     
 
-
-
 relay_state = 0xff  # all off
 relay_time = [0] * 4
 
 
+mk312_state={
+    "power_a":0,
+    "power_b":0,
+    "ma":0
+    }
+def set_mk312(power_a = -1, power_b = -1, ma = -1):
+    try:
+        my312 = mk312.MK312CommunicationWrapper(device='/dev/cu.usbserial-ftE23GYE')
+        my312.handshake()
+        my312.disableADC()
+        my312.loadMode(mode=MODE_INTENSE)
+        # my312.setPowerLevel(powerlevel=POWERLEVEL_HIGH)
+        if (ma > -1):
+            my312.setLevelMA(level=ma)
+        mk1312_state["ma"]= my312.getLevelMA()
+        if (power_a > -1):
+            my312.setLevelA(level=power_a)
+        mk1312_state["power_a"]=my312.getLevelA()
+        if (power_a > -1):
+            my312.setLevelB(level=power_b)
+        mk1312_state["power_b"] = my312.getLevelB()
+        
+        #my312.enableADC()
+    except Exception as e:
+        print("excecption mk312: "+e)
+    finally:
+        my312.resetkey()
+        my312.closeserialport()
+        
+        
 def relay_send(payload):
     try:
         bus.write_byte_data(0x20, 0x6,

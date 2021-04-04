@@ -287,7 +287,10 @@ class MK312CommunicationWrapper(object):
         # Check if we have a key
         if self.key is None:
             self.handshake()
-
+        
+        if mode is self.readaddress(address=ADDRESS_CURRENT_MODE):
+            return True
+        
         # Switch the mode
         if not self.writedata(address=ADDRESS_CURRENT_MODE, data=mode):
             log.debug('Mode switching is not working!')
