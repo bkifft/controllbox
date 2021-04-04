@@ -60,8 +60,9 @@ class MK312CommunicationWrapper(object):
                                       parity=serial.PARITY_NONE,
                                       stopbits=serial.STOPBITS_ONE,
                                       timeout=self.timeout,
-                                      xonxoff=serial.XOFF,
-                                      rtscts=False)
+#                                      xonxoff=serial.XOFF,
+#                                      rtscts=False
+                                       )
             if self.port.is_open:
                 # Closing the serial port if it is already open and use the properties above for reopen
                 log.debug('Serial port is already open - closing it and reopen using the settings for MK-312.')

@@ -11,6 +11,7 @@ import sys
 import schedule
 from threading import Thread
 import mk312
+from mk312.constants import *
 
 
 app = Flask(__name__)
@@ -30,24 +31,26 @@ mk312_state={
     "power_b":0,
     "ma":0
     }
+def  get_mk312_state_string():
+    return "A: " + str(mk312_state["power_a"]) + " B: " + str(mk312_state["power_b"]) + " MA: " + str(mk312_state["ma"])
+    
 def set_mk312(power_a = -1, power_b = -1, ma = -1):
     try:
-        my312 = mk312.MK312CommunicationWrapper(device='/dev/cu.usbserial-ftE23GYE')
+        my312 = mk312.MK312CommunicationWrapper(device="COM4")
         my312.handshake()
         my312.disableADC()
         my312.loadMode(mode=MODE_INTENSE)
         # my312.setPowerLevel(powerlevel=POWERLEVEL_HIGH)
         if (ma > -1):
             my312.setLevelMA(level=ma)
-        mk1312_state["ma"]= my312.getLevelMA()
+        mk312_state["ma"]= my312.getLevelMA()
         if (power_a > -1):
             my312.setLevelA(level=power_a)
-        mk1312_state["power_a"]=my312.getLevelA()
+        mk312_state["power_a"]=my312.getLevelA()
         if (power_a > -1):
             my312.setLevelB(level=power_b)
-        mk1312_state["power_b"] = my312.getLevelB()
-        
-        #my312.enableADC()
+        mk312_state["power_b"] = my312.getLevelB()
+       #my312.enableADC()
     except Exception as e:
         print("excecption mk312: "+e)
     finally:
@@ -56,9 +59,9 @@ def set_mk312(power_a = -1, power_b = -1, ma = -1):
         
         
 def relay_send(payload):
+    return
     try:
-        bus.write_byte_data(0x20, 0x6,
-                            payload)  # 0x20 adress (canbe set via A0-A3 DIP on the relay board), 0x6 type (required value)
+        bus.write_byte_data(0x20, 0x6, payload)  # 0x20 adress (canbe set via A0-A3 DIP on the relay board), 0x6 type (required value)
     except:
         print("failed to i2c_send")
 
@@ -162,6 +165,26 @@ def index():
 def action(devicename, action):
     global relay_state
     global relay_time
+    if re.match("^MK312$", devicename) is not None:
+        if action == "STATE":
+            response = app.response_class(
+                response= "<p>"+get_mk312_state_string() + "</p>" ,
+                mimetype='text/plain'
+            )
+            return response
+        print(action)
+        value = int(action[1:])
+        print (value)
+        if value < 0 or value > 99:
+            return ("MK312 value error")
+        if action[0] == "A":
+            set_mk312(power_a = value)    
+        if action[0] == "B":
+            set_mk312(power_b = value)  
+        if action[0] == "M":
+            set_mk312(ma = value)                  
+        return "OK MK312"
+
     if re.match("^SW[1-4]$", devicename) is not None:
         if action == "STATE":
             response = app.response_class(
@@ -183,7 +206,7 @@ def action(devicename, action):
             relay_state &= ~(0x1 << relay_id)  # this sets the respective bit to 0
             relay_time[relay_id] += int(action)
 
-    relay_send(relay_state)
+        relay_send(relay_state)
 
     return "OK"
     
@@ -193,10 +216,10 @@ if __name__ == '__main__':
     schedule.every(1).seconds.do(relay_loop)
     t = Thread(target=run_schedule)
     t.start()
-    IP = get_IP()
-    last_octet = IP.split('.')[3]
+    #IP = get_IP()
+    #last_octet = IP.split('.')[3]
     #  clack_octet(last_octet)
-    time.sleep(2)
+    #time.sleep(2)
     relay_send(0xff)  # initial reset, all off
     relay_state = 0xff
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)  # start the webserver
